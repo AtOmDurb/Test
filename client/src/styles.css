@@ -1,0 +1,117 @@
+/* Базовые стили */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+  
+  .content-container {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  /* Навигационная панель */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #2c3e50;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+  
+  .navbar-logo {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .navbar-links {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+  
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+  }
+  
+  .nav-link:hover {
+    background-color: #34495e;
+    transform: translateY(-2px);
+  }
+  
+  .user-email {
+    color: #ecf0f1;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+  }
+  
+  .logout-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+  
+  .logout-button:hover {
+    background-color: #c0392b;
+    transform: translateY(-2px);
+  }
+  
+  /* Страница входа */
+  .login-container {
+    max-width: 400px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Загрузка */
+  .loading {
+    text-align: center;
+    padding: 2rem;
+    font-size: 1.2rem;
+    color: #7f8c8d;
+  }
+  
+  /* Панели */
+  .dashboard {
+    background: white;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Адаптивность */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      padding: 1rem;
+    }
+  
+    .navbar-links {
+      margin-top: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  }

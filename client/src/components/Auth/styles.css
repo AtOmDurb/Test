@@ -1,0 +1,77 @@
+@import '../../styles';
+
+.auth {
+  &-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, primary-color, secondary-color);
+    padding: 20px;
+  }
+
+  &-form {
+    background: white;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+
+    &-title {
+      margin-bottom: 20px;
+      text-align: center;
+      color: primary-color;
+    }
+
+    &-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+
+        &:focus {
+          outline: none;
+          border-color: primary-color;
+        }
+      }
+    }
+
+    &-error {
+      color: #e74c3c;
+      margin-top: 5px;
+      font-size: 14px;
+    }
+
+    &-submit {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+    }
+  }
+
+  &-footer {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+
+    a {
+      color: primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
