@@ -48,7 +48,7 @@ exports.register = async (req, res) => {
       return res.status(400).json({ error: 'Email и пароль обязательны' });
     }
 
-    const { email, password, role } = req.body;
+    const {username, email, password, role } = req.body;
 
     // Проверка существования пользователя
     const existingUser = await User.findByEmail(email);
@@ -59,8 +59,8 @@ exports.register = async (req, res) => {
     const hashedPassword = await User.hashPassword(password);
     
     const [result] = await pool.execute(
-      'INSERT INTO users (email, password, role) VALUES (?, ?, ?)',
-      [email, hashedPassword, role]
+      'INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)',
+      [username, email, hashedPassword, role]
     );
 
     res.status(201).json({ 
