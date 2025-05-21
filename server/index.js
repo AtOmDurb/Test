@@ -3,15 +3,29 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const fs = require('fs');
+const pool = require('./config/db');
+
 
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:3000',
+  credentials: true
+}));
 app.use(express.json());
 
-// 1. Проверка подключения к БД
-const pool = require('./config/db');
+// Подключение роутов
+const authRoutes = require('./routes/auth');
+const adminRoutes = require('./routes/admin');
+const teacherRoutes = require('./routes/teacher');
+const studentRoutes = require('./routes/student');
+
+app.use(express.json());
+app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/teacher', teacherRoutes);
+app.use('/api/student', studentRoutes);
 
 (async () => {
   try {
@@ -22,6 +36,7 @@ const pool = require('./config/db');
     process.exit(1);
   }
 })();
+
 
 // 2. Проверка статических файлов
 const staticPath = path.join(__dirname, 'public');
@@ -83,6 +98,7 @@ app.use((err, req, res, next) => {
     message: process.env.NODE_ENV === 'development' ? err.message : 'Ошибка сервера'
   });
 });
+
 
 // Запуск сервера
 const PORT = process.env.PORT || 5000;
