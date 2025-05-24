@@ -6,7 +6,7 @@ const StudentPanel = () => {
 
   return (
     <div className="dashboard">
-      <h1>Панель Учиеля</h1>
+      <h1>Панель Учителя</h1>
       <p>Добро пожаловать, {user?.username}!</p>
       <button onClick={logout}>Выйти</button>
     </div>
