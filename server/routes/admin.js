@@ -1,39 +1,36 @@
 const express = require('express');
 const router = express.Router();
+const adminController = require('../controllers/adminController');
 
-const authMiddleware = require('../middleware/auth');
-const checkRole = require('../middleware/role');
+const auth = require('../middleware/auth.js');
 const userController = require('../controllers/admin/userController');
 const disciplineController = require('../controllers/admin/disciplineController');
 const groupController = require('../controllers/admin/groupController');
+const checkRole = require('../middleware/role.js');
 
-
-router.get('/dashboard', authMiddleware, checkRole('admin'), (req, res) => {
-  res.json({ 
-    message: 'Админ панель',
-    user: req.user
-  });
-});
-
-router.post('/users', 
-  authMiddleware, 
-  checkRole('admin'), 
-  adminController.createUser
-);
+const adminMiddleware = [auth, checkRole('admin')];
 
 // Users
-router.post('/users', authMiddleware, checkRole('admin'), userController.createUser);
-router.put('/users/:id', authMiddleware, checkRole('admin'), userController.updateUser);
-router.delete('/users/:id', authMiddleware, checkRole('admin'), userController.deleteUser);
+router.get('/users', ...adminMiddleware, userController.getAllUsers);
+router.get('/users/:id', ...adminMiddleware, userController.getUserById);
+router.post('/users', ...adminMiddleware, userController.createUser);
+router.put('/users/:id', ...adminMiddleware, userController.updateUser);
+router.delete('/users/:id', ...adminMiddleware, userController.deleteUser);
 
 // Disciplines
-router.post('/disciplines', authMiddleware, checkRole('admin'), disciplineController.createDiscipline);
-router.put('/disciplines/:id', authMiddleware, checkRole('admin'), disciplineController.updateDiscipline);
-router.delete('/disciplines/:id', authMiddleware, checkRole('admin'), disciplineController.deleteDiscipline);
+router.get('/disciplines', ...adminMiddleware, disciplineController.getAllDisciplines);
+router.get('/disciplines/:id', ...adminMiddleware, disciplineController.getDisciplineById);
+router.post('/disciplines', ...adminMiddleware, disciplineController.createDiscipline);
+router.put('/disciplines/:id', ...adminMiddleware, disciplineController.updateDiscipline);
+router.delete('/disciplines/:id', ...adminMiddleware, disciplineController.deleteDiscipline);
 
 // Groups
-router.post('/groups', authMiddleware, checkRole('admin'), groupController.createGroup);
-router.put('/groups/:id', authMiddleware, checkRole('admin'), groupController.updateGroup);
-router.delete('/groups/:id', authMiddleware, checkRole('admin'), groupController.deleteGroup);
+router.get('/groups', ...adminMiddleware, groupController.getAllGroups);
+router.get('/groups/:id', ...adminMiddleware, groupController.getGroupById);
+router.post('/groups', ...adminMiddleware, groupController.createGroup);
+router.put('/groups/:id', ...adminMiddleware, groupController.updateGroup);
+router.delete('/groups/:id', ...adminMiddleware, groupController.deleteGroup);
+
+
 
 module.exports = router;

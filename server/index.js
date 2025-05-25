@@ -20,8 +20,12 @@ const authRoutes = require('./routes/auth');
 const adminRoutes = require('./routes/admin');
 const teacherRoutes = require('./routes/teacher');
 const studentRoutes = require('./routes/student');
+const adminRouter = require('./routes/admin');
 
-app.use(express.json());
+
+
+app.use('/api/admin', adminRouter);
+
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/teacher', teacherRoutes);
