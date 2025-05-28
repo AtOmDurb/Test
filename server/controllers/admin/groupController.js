@@ -2,6 +2,24 @@ const pool = require('../../config/db');
 const { groupSchema } = require('../validators/groupSchema');
 
 module.exports = {
+
+getAllGroups: async (req, res) => {
+    try {
+      const [groups] = await pool.query(`
+        SELECT g.*, d.title as discipline_name 
+        FROM groups g
+        JOIN disciplines d ON g.discipline_id = d.id
+      `);
+      res.json(groups);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+
+
+
+
   // Создание группы
   createGroup: async (req, res) => {
     try {

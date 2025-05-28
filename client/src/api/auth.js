@@ -14,3 +14,18 @@ export const getProtectedData = async () => {
   });
   return response.data;
 };
+
+export const getUsers = () => axios.get('/admin/users');
+export const createUser = (data) => axios.post('/admin/users', data);
+export const updateUser = (id, data) => axios.put(`/admin/users/${id}`, data);
+export const deleteUser = (id) => axios.delete(`/admin/users/${id}`);
+
+export const getGroups = () => axios.get('/admin/groups');
+export const createGroup = (data) => axios.post('/admin/groups', data);
+export const updateGroup = (id, data) => axios.put(`/admin/groups/${id}`, data);
+export const deleteGroup = (id) => axios.delete(`/admin/groups/${id}`);
+
+export const getDisciplines = () => axios.get('/admin/disciplines');
+export const createDiscipline = (data) => axios.post('/admin/disciplines', data);
+export const updateDiscipline = (id, data) => axios.put(`/admin/disciplines/${id}`, data);
+export const deleteDiscipline = (id) => axios.delete(`/admin/disciplines/${id}`);

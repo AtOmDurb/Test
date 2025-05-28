@@ -3,6 +3,18 @@ const bcrypt = require('bcryptjs');
 const { userSchema } = require('../validators/userSchema');
 
 module.exports = {
+
+
+  getAllUsers: async (req, res) => {
+    try {
+      const [users] = await pool.query('SELECT id, username, email, role FROM users');
+      res.json(users);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  
   // Создание пользователя
   createUser: async (req, res) => {
     try {

@@ -2,6 +2,24 @@ const pool = require('../../config/db');
 const { disciplineSchema } = require('../validators/disciplineSchema');
 
 module.exports = {
+
+getAllDisciplines: async (req, res) => {
+    try {
+      const [disciplines] = await pool.query(`
+        SELECT d.*, u.username as created_by_name 
+        FROM disciplines d
+        JOIN users u ON d.created_by = u.id
+      `);
+      res.json(disciplines);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+
+
+
+
   // Создание дисциплины
   createDiscipline: async (req, res) => {
     try {

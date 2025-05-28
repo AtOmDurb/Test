@@ -11,7 +11,8 @@ const app = express();
 // Middleware
 app.use(cors({
   origin: 'http://localhost:3000',
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Authorization', 'Content-Type']
 }));
 app.use(express.json());
 
@@ -25,7 +26,7 @@ const adminRouter = require('./routes/admin');
 
 
 app.use('/api/admin', adminRouter);
-
+app.use('/api/admin', require('./routes/admin'));
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/teacher', teacherRoutes);
