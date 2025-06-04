@@ -1,6 +1,17 @@
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../context/AuthContext';
-import { Table, Button, Modal, Form, Input, Select, message, Tabs, Tag, Space } from 'antd';
+import {
+  Table,
+  Button,
+  Modal,
+  Form,
+  Input,
+  Select,
+  message,
+  Tabs,
+  Tag,
+  Space
+} from 'antd';
 import {
   UserOutlined,
   TeamOutlined,
@@ -12,11 +23,10 @@ import {
 } from '@ant-design/icons';
 import axios from 'axios';
 
-const { TabPane } = Tabs;
 const { Option } = Select;
 
 const AdminPanel = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user, token, logout } = useContext(AuthContext);
   const [users, setUsers] = useState([]);
   const [groups, setGroups] = useState([]);
   const [disciplines, setDisciplines] = useState([]);
@@ -33,10 +43,16 @@ const AdminPanel = () => {
 
   const fetchData = async () => {
     try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      };
+
       const [usersRes, groupsRes, disciplinesRes] = await Promise.all([
-        axios.get('/api/admin/users'),
-        axios.get('/api/admin/groups'),
-        axios.get('/api/admin/disciplines')
+        axios.get('/api/admin/users', config),
+        axios.get('/api/admin/groups', config),
+        axios.get('/api/admin/disciplines', config)
       ]);
       setUsers(usersRes.data);
       setGroups(groupsRes.data);
@@ -132,7 +148,11 @@ const AdminPanel = () => {
       cancelText: 'Отмена',
       onOk: async () => {
         try {
-          await axios.delete(`/api/${type}/${id}`);
+          await axios.delete(`/api/admin/${type}/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          });
           message.success('Удалено успешно');
           fetchData();
         } catch (error) {
@@ -145,12 +165,20 @@ const AdminPanel = () => {
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      
+
       if (currentItem) {
-        await axios.put(`/api/${currentTab}/${currentItem.id}`, values);
+        await axios.put(`/api/admin/${currentTab}/${currentItem.id}`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         message.success('Изменения сохранены');
       } else {
-        await axios.post(`/api/${currentTab}`, values);
+        await axios.post(`/api/admin/${currentTab}`, values, {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
         message.success('Создано успешно');
       }
 
@@ -244,45 +272,52 @@ const AdminPanel = () => {
         </Button>
       </div>
 
-      <Tabs defaultActiveKey="users" onChange={setCurrentTab}>
-        <TabPane tab={<span><UserOutlined />Пользователи</span>} key="users">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => handleAdd('users')}
-            style={{ marginBottom: '16px' }}
-          >
-            Добавить пользователя
-          </Button>
-          <Table dataSource={users} columns={userColumns} rowKey="id" />
-        </TabPane>
-        <TabPane tab={<span><TeamOutlined />Группы</span>} key="groups">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => handleAdd('groups')}
-            style={{ marginBottom: '16px' }}
-          >
-            Добавить группу
-          </Button>
-          <Table dataSource={groups} columns={groupColumns} rowKey="id" />
-        </TabPane>
-        <TabPane tab={<span><BookOutlined />Дисциплины</span>} key="disciplines">
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => handleAdd('disciplines')}
-            style={{ marginBottom: '16px' }}
-          >
-            Добавить дисциплину
-          </Button>
-          <Table dataSource={disciplines} columns={disciplineColumns} rowKey="id" />
-        </TabPane>
-      </Tabs>
+      <Tabs
+        defaultActiveKey="users"
+        onChange={setCurrentTab}
+        items={[
+          {
+            key: 'users',
+            label: <span><UserOutlined /> Пользователи</span>,
+            children: (
+              <>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd('users')} style={{ marginBottom: 16 }}>
+                  Добавить пользователя
+                </Button>
+                <Table dataSource={users} columns={userColumns} rowKey="id" />
+              </>
+            )
+          },
+          {
+            key: 'groups',
+            label: <span><TeamOutlined /> Группы</span>,
+            children: (
+              <>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd('groups')} style={{ marginBottom: 16 }}>
+                  Добавить группу
+                </Button>
+                <Table dataSource={groups} columns={groupColumns} rowKey="id" />
+              </>
+            )
+          },
+          {
+            key: 'disciplines',
+            label: <span><BookOutlined /> Дисциплины</span>,
+            children: (
+              <>
+                <Button type="primary" icon={<PlusOutlined />} onClick={() => handleAdd('disciplines')} style={{ marginBottom: 16 }}>
+                  Добавить дисциплину
+                </Button>
+                <Table dataSource={disciplines} columns={disciplineColumns} rowKey="id" />
+              </>
+            )
+          }
+        ]}
+      />
 
       <Modal
         title={currentItem ? `Редактировать ${getTypeName(currentTab)}` : `Добавить ${getTypeName(currentTab)}`}
-        visible={isModalVisible}
+        open={isModalVisible}
         onOk={handleSubmit}
         onCancel={() => setIsModalVisible(false)}
         width={700}

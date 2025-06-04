@@ -7,7 +7,7 @@ getAllGroups: async (req, res) => {
     try {
       const [groups] = await pool.query(`
         SELECT g.*, d.title as discipline_name 
-        FROM groups g
+        FROM groups1 g
         JOIN disciplines d ON g.discipline_id = d.id
       `);
       res.json(groups);
@@ -27,7 +27,7 @@ getAllGroups: async (req, res) => {
       if (error) return res.status(400).json({ error: error.details[0].message });
 
       const [result] = await pool.execute(
-        `INSERT INTO groups (name, discipline_id) 
+        `INSERT INTO groups1 (name, discipline_id) 
         VALUES (?, ?)`,
         [req.body.name, req.body.discipline_id]
       );
@@ -48,7 +48,7 @@ getAllGroups: async (req, res) => {
       if (error) return res.status(400).json({ error: error.details[0].message });
 
       await pool.execute(
-        `UPDATE groups 
+        `UPDATE groups1 
         SET name = ?, discipline_id = ? 
         WHERE id = ?`,
         [name, discipline_id, id]
@@ -64,7 +64,7 @@ getAllGroups: async (req, res) => {
   deleteGroup: async (req, res) => {
     try {
       const { id } = req.params;
-      await pool.execute('DELETE FROM groups WHERE id = ?', [id]);
+      await pool.execute('DELETE FROM groups1 WHERE id = ?', [id]);
       res.json({ message: 'Группа удалена' });
     } catch (error) {
       res.status(500).json({ error: 'Ошибка удаления' });
